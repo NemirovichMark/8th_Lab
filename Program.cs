@@ -7,14 +7,38 @@ namespace _8th_Lab
 
     class Program
     {
+        static bool is_in_arr(char[] arr, char x)
+        {
+
+            foreach (char xx in arr)
+            {
+                if (x == xx)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         static string encode_message(string message)
         {
             string res = "";
+            string s = ",.?!";
+            char[] symbols = s.ToCharArray();
 
             for (int i = message.Length - 1; i >= 0; i--)
             {
-                res += message[i];
+                if (Char.IsLetter(message[i]))
+                {
+                    res += message[i];
+                }
             }
+
+            if (is_in_arr(symbols, message[message.Length - 1]))
+            {
+                res += message[message.Length - 1];
+            }
+
             return res;
         }
 
@@ -61,8 +85,8 @@ namespace _8th_Lab
 
                 foreach (char chr in cache.Keys)
                 {
-                    cache[chr] /= char_counter;
-                    Console.WriteLine($"{chr} - {cache[chr]}");
+                    double c = cache[chr] / char_counter;
+                    Console.WriteLine($"{chr} - {c}");
                 }
             }
             #endregion
@@ -73,6 +97,8 @@ namespace _8th_Lab
                 List<string> output_ = new List<string>();
 
                 Console.WriteLine("write -1 as a stop sign");
+                Console.WriteLine("please enter only letters or symbols which is an alphabet");
+                Console.WriteLine("of the codebook, otherwise the info would be lost");
 
                 while (true)
                 {
