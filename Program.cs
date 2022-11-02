@@ -4,32 +4,89 @@ namespace Task
 {
     class Program
     {
+        static string[] Split(string s, string separete)
+        {
+            Dictionary<char, int> sep = new Dictionary<char, int>();
+            foreach(char c in separete)
+            {
+                sep[c] = 1;
+            }
+            List<string> list = new List<string>();
+            string str = "";
+            for(int i = 0; i < s.Length; i++)
+            {
+                if (sep.ContainsKey(s[i]))
+                {
+                    if (str != "")
+                    {
+                        list.Add(str);
+                        str = "";
+                    }
+                    list.Add("" + s[i]);
+                }
+                else
+                {
+                    str += s[i];
+                }
+            }
+            if (str != "")
+            {
+                list.Add(str);
+                str = "";
+            }
+            string[] S =new string[list.Count];
+            for (int i = 0; i < S.Length; i++)
+            {
+                S[i] = list[i];
+            }
+            return S;
+        }
         static void exercise_3_1()
         {
             Console.WriteLine("введите текс");
             string s;
             s = Console.ReadLine();
             double kolRu = 0, kolEn = 0;
+            Dictionary<char, int> map = new Dictionary<char, int>();
             foreach(var to in s)
             {
-                if ((to >= 'а' && to <= 'я') || (to >= 'А' && to <= 'Я')) 
+                if ((to >= 'а' && to <= 'я') || (to >= 'А' && to <= 'Я'))
                 {
                     kolRu++;
+                    if (!map.ContainsKey(to))
+                    {
+                        map[to] = 1;
+                    }
+                    else
+                    {
+                        map[to]++;
+                    }
                 }
-                if ((to >= 'a' && to <= 'z') || (to >= 'A' && to <= 'Z')) 
+                if ((to >= 'a' && to <= 'z') || (to >= 'A' && to <= 'Z'))
                 {
                     kolEn++;
                 }
             }
             //Console.WriteLine($"{ (int)'а'} {(int)'я'}");
-            double prosent = 0;
-            if (kolRu + kolEn > 0)
+            //Console.WriteLine($" {kolEn} {kolRu}");
+            if (kolRu + kolEn == 0)
             {
-                prosent = kolRu / (kolEn + kolRu);
+                return;
             }
-            prosent *= 100; 
-            //Console.WriteLine($"{kolRu} {kolEn}");
-            Console.WriteLine($"{prosent}%");
+
+            for (int i = 'А'; i <= 'я'; ++i)
+            { 
+                double prosent = 0;
+                double kol = 0;
+                if (!map.ContainsKey((char)i))
+                {
+                    continue;
+                }
+                kol = map[(char)i];
+                prosent = kol / (kolEn + kolRu);
+                prosent *= 100;
+                Console.WriteLine($"{(char)i} {prosent}%");
+            }
         }
 
         static string Reverse(string s)
@@ -46,13 +103,13 @@ namespace Task
             Console.WriteLine("введите текс");
             string s;
             s = Console.ReadLine();
-            
-            string[] S = s.Split(" ");
+            char ch = '"';
+            string[] S = Split(s, " .,/;'[]{}?!" + ch);
             s = "";
             for(int i = 0; i < S.Length; i++)
             {
                 s += Reverse(S[i]);
-                s += " ";
+                s += "";
             }
             Console.WriteLine(s);
 
@@ -60,15 +117,15 @@ namespace Task
             for (int i = 0; i < S.Length; i++)
             {
                 s += S[i];
-                s += " ";
+                s += "";
             }
             Console.WriteLine(s);
         }
         static void Main(string[] args)
         {
-            /*#region exercise_3_1;
+            #region exercise_3_1;
             exercise_3_1();
-            #endregion*/
+            #endregion
 
             #region exercise_3_2;
             exercise_3_2();
