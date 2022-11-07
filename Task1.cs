@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Globalization;
 using System.Runtime.ExceptionServices;
+using System.Text;
 using System.Windows.Markup;
 
 class HelloWorld
@@ -20,18 +21,29 @@ class HelloWorld
         double k = 0;
         double z = 0;
         bool t = false;
+        int[] mas = new int[1200];
         Console.WriteLine("Enter the text:");
         text = Console.ReadLine();
         for (int i = 0; i < text.Length; i++)
         {
             t = false;
-            if (text[i] == 1025 || text[i] == 1105 || (text[i] >= 1040 && text[i] <= 1103)) {k++; t = true;}
+            if (text[i] == 1025 || text[i] == 1105 || (text[i] >= 1040 && text[i] <= 1103)) { k++; t = true; mas[text[i]]++;  }
             if (t == false) z++;
         }
-        Console.WriteLine(z);
+
         double b = k / (text.Length - z) * 100;
         Console.WriteLine("Count of russian letters: " + k);
         Console.WriteLine("Frequency of russian letters: " + b + "%.");
+        Console.WriteLine("Statistic of letter:");
+        for (int i=0; i<1200; i++)
+        {
+            b = k / (text.Length - z) * 100;
+            if (mas[i] > 0)
+            {
+                b = mas[i] / (text.Length - z) * 100;
+                Console.WriteLine(Convert.ToChar(i) + " - " + b + "%");
+            }
+        }
         return 0;
     }
 }
