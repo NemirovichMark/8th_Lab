@@ -18,13 +18,15 @@ class HelloWorld
         //Я = 1071
         string text;
         double k = 0;
+        double z = 0;
         Console.WriteLine("Enter the text:");
         text = Console.ReadLine();
-        for (int i=0; i<text.Length; i++)
+        for (int i = 0; i < text.Length; i++)
         {
             if (text[i] == 1025 || text[i] == 1105 || (text[i] >= 1040 && text[i] <= 1103)) k++;
+            if (text[i] == 32) z++;
         }
-        double b = k/text.Length*100;
+        double b = k / (text.Length-z) * 100;
         Console.WriteLine("Count of russian letters: " + k);
         Console.WriteLine("Frequency of russian letters: " + b + "%.");
         return 0;
