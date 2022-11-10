@@ -1,0 +1,129 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Security.Cryptography;
+using System.Text;
+using System.Transactions;
+
+class Programm
+{
+    static bool tt(char a)
+    {   
+         bool g = false;
+        g = ((a >= 1040 && a <= 1103) || a == 1025 || a == 1103 || (a >= 65 && a <= 90) || (a >= 97 && a <= 122));
+        return g;
+    }
+    static void Main()
+    {
+        Console.WriteLine("Введите текст");
+        string card = Console.ReadLine();
+        char[] chacha = new char[card.Length + 2];
+
+                            // a = 1072; я = 1103; ё = 1105
+                            // A = 1040; Я = 1071; Ё = 1025
+                            // 'A' = 65; 'Z' = 90
+                            // 'a' = 97; 'z' = 122
+
+        chacha[0] = '1';
+        chacha[card.Length + 1] = '1';
+
+        for(int i = 0; i < card.Length; i++)
+        {
+            chacha[i + 1] = card[i];
+        }
+
+        int k1 = -1;
+        int k2 = -1;
+
+        for (int i = 0; i < chacha.Length - 1; i++)
+        {
+            List<char> list = new List<char>();
+
+            if (tt(chacha[i]) == false && tt(chacha[i + 1]) == true)
+            {
+                k1 = (i + 1);
+            }
+
+            if (tt(chacha[i]) == true && tt(chacha[i + 1]) == false)
+            {
+                k2 = i;
+            }
+
+            if (k1 != -1 && k2 != -1)
+            {
+                for(int j = k1; j <= k2; j++)
+                {
+                    list.Add(chacha[j]);
+                }
+                
+                list.Reverse();
+
+                int p = 0;
+
+                for(int j = k1; j <= k2; j++)
+                {
+                    chacha[j] = list[p];
+                    p++;
+                }
+
+                k1 = -1;
+                k2 = -1;
+            }
+        }
+
+        Console.WriteLine("Перевёртыш");
+        for (int i = 1; i < chacha.Length - 1; i++)
+        {
+            Console.Write(chacha[i]);
+        }
+
+        for (int i = 0; i < chacha.Length - 1; i++)
+        {
+            List<char> list = new List<char>();
+
+            if (tt(chacha[i]) == false && tt(chacha[i + 1]) == true)
+            {
+                k1 = (i + 1);
+            }
+
+            if (tt(chacha[i]) == true && tt(chacha[i + 1]) == false)
+            {
+                k2 = i;
+            }
+
+            if (k1 != -1 && k2 != -1)
+            {
+                for (int j = k1; j <= k2; j++)
+                {
+                    list.Add(chacha[j]);
+                }
+
+                list.Reverse();
+
+                int p = 0;
+
+                for (int j = k1; j <= k2; j++)
+                {
+                    chacha[j] = list[p];
+                    p++;
+                }
+
+                k1 = -1;
+                k2 = -1;
+            }
+        }
+
+        Console.WriteLine();
+
+        Console.WriteLine("Перевёртыш");
+        for (int i = 1; i < chacha.Length - 1; i++)
+        {
+            Console.Write(chacha[i]);
+        }
+
+    }
+}
