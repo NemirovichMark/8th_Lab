@@ -1,0 +1,89 @@
+using System;
+using System.Data;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
+using System.Security;
+using System.Security.Cryptography;
+using System.Text;
+using System.Transactions;
+
+class Programm
+{
+    static void Main()
+    {
+        Console.WriteLine("Введите текст");
+        string card = Console.ReadLine();
+        int[] letter_up = new int[33];
+        int[] letter_low = new int[33];
+        
+        //char a = 'Ю';
+        //int b = a;
+        //Console.WriteLine(b);   // a = 1072; я = 1103; ё = 1105
+                                // A = 1040; Я = 1071; Ё = 1025
+        
+        for (int i = 0; i < card.Length; i++)
+        {
+            char c = card[i];
+            int b = c;
+            if (1040 <= b && b <= 1071)
+            {
+                letter_up[b - 1040] += 1;
+            }
+            
+            if (b == 1025)
+            {
+                letter_up[32] += 1; // Буква Ё считается последней в массиве
+            }
+            
+            if (1072 <= b && b <= 1103)
+            {
+                letter_low[b - 1072] += 1;
+            }
+
+            if (b == 1105)
+            {
+                letter_low[32] += 1; //Буква ё считается последней в массиве
+            }
+        }
+
+        double sum = 0;
+        
+        for(int i = 0; i < letter_up.Length; i++)
+        {
+            sum += letter_up[i];
+            sum += letter_low[i];
+        }
+
+        Console.WriteLine("Буквы");
+        for(int i = 0; i < 32; i++)
+        {
+            if (letter_up[i] != 0)
+            {
+                Console.WriteLine(Convert.ToChar(i + 1040) + " - " + letter_up[i] + " " + letter_up[i] / sum * 100 + "%");
+            }
+        }
+
+        for (int i = 0; i < 32; i++)
+        {
+            if (letter_low[i] != 0)
+            {
+                Console.WriteLine(Convert.ToChar(i + 1072) + " - " + letter_low[i] + " " + letter_low[i] / sum * 100 + "%");
+            }
+        }
+
+        if (letter_low[32] != 0 || letter_up[32] != 0)
+        {
+            if (letter_up[32] != 0)
+            {
+                Console.WriteLine(Convert.ToChar(1025) + " - " + letter_up[32]);
+            }
+            
+            if (letter_low[32] != 0)
+            {
+                Console.WriteLine(Convert.ToChar(1105) + " - " + letter_low[32]);
+            }
+        }
+    }
+}
